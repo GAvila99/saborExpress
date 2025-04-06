@@ -3,10 +3,8 @@ import os
 # Lista global para armazenar os nomes dos restaurantes cadastrados
 restaurantes = []
 
+#Exibe o nome do programa com um banner estilizado
 def exibir_nome_programa():
-    """
-    Exibe o nome do programa com um banner estilizado.
-    """
     print(""""
       
 ░██████╗░█████╗░██████╗░░█████╗░██████╗░  ███████╗██╗░░██╗██████╗░██████╗░███████╗░██████╗░██████╗
@@ -17,47 +15,35 @@ def exibir_nome_programa():
 ╚═════╝░╚═╝░░╚═╝╚═════╝░░╚════╝░╚═╝░░╚═╝  ╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝╚═════╝░╚═════╝░
 """)
 
+#Gera mensagem de voltar ao menu
+def voltar_ao_menu():
+    input('\nPressione uma tecla para voltar ao menu principal')
+    main()  # Retorna ao menu principal
+
+# Exibe uma mensagem de erro para opções inválidas e retorna ao menu principal.
 def opcao_invalida():
-    """
-    Exibe uma mensagem de erro para opções inválidas e retorna ao menu principal.
-    """
     print('Opcao Invalida!\n')
-    input('Pressione uma tecla para voltar ao menu principal')
+    input('Pressione ENTER para voltar ao menu principal')
     main()  # Retorna ao menu principal
 
 #Permite ao usuário cadastrar um novo restaurante.
 #O nome do restaurante é adicionado à lista global 'restaurantes'.
 def cadastrar_restaurante():
-    os.system('cls')  # Limpa a tela
-    print('Cadastro de Restaurante.\n')
-    
-    
+    exibir_subtitulo('Cadastro de Restaurante.')
     nome_restaurante = str(input('Digite o nome do restaurante: '))  # Solicita o nome do restaurante
-    if nome_restaurante == '':
-        os.system('cls')
-        print('Digite um nome valido!\n')
-        input('Pressione uma tecla para voltar ao menu principal')
-        cadastrar_restaurante()
-    else:
-        restaurantes.append(nome_restaurante)  # Adiciona o restaurante à lista
-        print(f'Restaurante {nome_restaurante} cadastrado com sucesso!\n')
-        input('\nPressione uma tecla para voltar ao menu principal')
-        main()  # Retorna ao menu principal
+    restaurantes.append(nome_restaurante)  # Adiciona o restaurante à lista
+    print(f'Restaurante {nome_restaurante} cadastrado com sucesso!\n')
+    voltar_ao_menu()
 
 #Exibe a lista de restaurantes cadastrados.
 def listar_restaurante():
-    os.system('cls')  # Limpa a tela
-    print('Lista de restaurantes\n')
+    exibir_subtitulo('Lista de restaurantes')
     for restaurante in restaurantes:  # Itera sobre a lista de restaurantes
         print(f'. {restaurante}')  # Exibe cada restaurante
-    input('\nPressione uma tecla para voltar ao menu principal')
-    main()  # Retorna ao menu principal
+    voltar_ao_menu()
 
+#Executa a função correspondente à opção escolhida.
 def escolher_opcao():
-    """
-    Solicita ao usuário que escolha uma opção do menu.
-    Executa a função correspondente à opção escolhida.
-    """
     try:
         opcao_escolhida = int(input('Escolha uma opção: '))  # Solicita a entrada do usuário
         match opcao_escolhida:  # Estrutura de correspondência para as opções
@@ -76,8 +62,12 @@ def escolher_opcao():
 
 #Finaliza o programa exibindo uma mensagem de encerramento.
 def finalizar_programa():
-    os.system('cls')  # Limpa a tela
-    print('Programa Finalizado!\n')
+    exibir_subtitulo('Programa Finalizado!')
+
+def exibir_subtitulo(mensagem):
+    os.system('cls') # Limpa a tela
+    print(mensagem)
+    print()
 
 def exibir_menu():
     """
