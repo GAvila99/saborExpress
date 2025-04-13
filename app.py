@@ -69,20 +69,16 @@ def exibir_subtitulo(mensagem):
     print(mensagem)
     print()
 
+#Exibe o menu principal com as opções disponíveis.
 def exibir_menu():
-    """
-    Exibe o menu principal com as opções disponíveis.
-    """
     print('1- Cadastrar Restaurante')
     print('2- Listar Restaurantes')
     print('3- Ativar Restaurante')
     print('4- Sair\n')
 
+#Função principal do programa.
+#Exibe o banner, o menu e solicita a escolha do usuário.
 def main():
-    """
-    Função principal do programa.
-    Exibe o banner, o menu e solicita a escolha do usuário.
-    """
     os.system('cls')  # Limpa a tela
     exibir_nome_programa()  # Exibe o banner do programa
     exibir_menu()  # Exibe o menu principal

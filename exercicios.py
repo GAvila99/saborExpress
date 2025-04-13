@@ -41,3 +41,17 @@ def localizacao_plano_cartesiano():
     else:
         print('Está localizado no eixo')
 
+def listas():
+    numeros = 1,2,3,4,5,6,7,8,9,10
+    nomes = 'gabriel', 'avila', 'ribeiro'
+    data_nascimento = 1999
+    print(numeros)
+    print(nomes)
+    print(data_nascimento)
+
+    for numero % 2  1 in numeros:
+        numero = numero + numero
+        print(numero)
+
+listas()
+
