@@ -2,9 +2,9 @@ import os
 
 # Lista global para armazenar os nomes dos restaurantes cadastrados
 restaurantes = [
-    {'nome': 'LaChapa', 'categoria': 'Hamburgueria', 'status': False},
-    {'nome': 'LaFornalha', 'categoria': 'Pizzaria', 'status': True},
-    {'nome': 'LaMasia', 'categoria': 'Italiana', 'status': True}
+    {'id': 1, 'nome': 'LaChapa', 'categoria': 'Hamburgueria', 'status': False},
+    {'id': 2, 'nome': 'LaFornalha', 'categoria': 'Pizzaria', 'status': True},
+    {'id': 3, 'nome': 'LaMasia', 'categoria': 'Italiana', 'status': True}
 ]
 
 def exibir_nome_programa():
@@ -34,6 +34,8 @@ def opcao_invalida():
     print('Opcao Invalida!\n')
     input('Pressione ENTER para voltar ao menu principal')
 
+#implementar auto incremetno no id
+#terminar tratamento de excessao 
 def cadastrar_restaurante():
     """
     Permite ao usuário cadastrar um novo restaurante.
@@ -42,6 +44,16 @@ def cadastrar_restaurante():
     exibir_subtitulo('Cadastro de Restaurante.')
     nome_restaurante = input('Digite o nome do restaurante: ').strip()  # Solicita o nome do restaurante
     categoria_restaurante = str(input('Digite a categoria do restaurante: '))
+    
+    if not nome_restaurante or not categoria_restaurante:
+        print('Nome e Categoria nao podem ser vazio!')
+        voltar_ao_menu()
+        
+    for restaurante in restaurantes:
+        if restaurante['nome'].lower() == nome_restaurante.lower():
+            print('Restaurante ja cadastrado')
+            voltar_ao_menu()
+    
     restaurantes.append({'nome': nome_restaurante, 'categoria': categoria_restaurante, 'status': False})
     print(f'Restaurante {nome_restaurante} cadastrado com sucesso!\n')
     voltar_ao_menu()
@@ -70,14 +82,15 @@ def listar_restaurante():
     """
     Exibe a lista de restaurantes cadastrados.
     """
-    exibir_subtitulo(f'{"Lista de restaurantes":^48}')
-    print('{:^23}{:^24}{:^}'.format('NOME', 'CATEGORIA', 'STATUS'))
+    exibir_subtitulo(f'{"Lista de restaurantes":^58}')
+    print('{:^8} {:^22} {:^22} {:^8}'.format('ID', 'NOME', 'CATEGORIA', 'STATUS'))
     print()
     for restaurante in restaurantes:  # Itera sobre a lista de restaurantes
         nome_restaurante = restaurante['nome']
         categoria_restaurante = restaurante['categoria']
         status_restaurante = restaurante['status']
-        print(f'. {nome_restaurante: <20} | {categoria_restaurante: <20} | {status_restaurante}')  # Exibe cada restaurante
+        id_restaurante = restaurante['id']
+        print(f' {id_restaurante:>5}- | {nome_restaurante:<20} | {categoria_restaurante:<20} | {status_restaurante:^} ')  # Exibe cada restaurante
     voltar_ao_menu()
 
 def escolher_opcao():
