@@ -34,53 +34,58 @@ def opcao_invalida():
     print('Opcao Invalida!\n')
     input('Pressione ENTER para voltar ao menu principal')
 
-#implementar auto incremetno no id
-#terminar tratamento de excessao 
 def cadastrar_restaurante():
     """
     Permite ao usuário cadastrar um novo restaurante.
-    O nome do restaurante é adicionado à lista global 'restaurantes'.
+    O nome e a categoria do restaurante são solicitados e adicionados à lista global 'restaurantes'.
     """
     exibir_subtitulo('Cadastro de Restaurante.')
     nome_restaurante = input('Digite o nome do restaurante: ').strip()  # Solicita o nome do restaurante
-    categoria_restaurante = str(input('Digite a categoria do restaurante: '))
+    if not nome_restaurante:  # Verifica se o nome está vazio
+        print('Nome nao podem ser vazio!')
+        return voltar_ao_menu()
     
-    if not nome_restaurante or not categoria_restaurante:
-        print('Nome e Categoria nao podem ser vazio!')
-        voltar_ao_menu()
+    categoria_restaurante = str(input('Digite a categoria do restaurante: '))  # Solicita a categoria do restaurante
+    if not categoria_restaurante:  # Verifica se a categoria está vazia
+        print('Categoria nao podem ser vazio!')
+        return voltar_ao_menu()
         
-    for restaurante in restaurantes:
+    for restaurante in restaurantes:  # Verifica se o restaurante já está cadastrado
         if restaurante['nome'].lower() == nome_restaurante.lower():
             print('Restaurante ja cadastrado')
-            voltar_ao_menu()
+            return voltar_ao_menu()
     
-    restaurantes.append({'nome': nome_restaurante, 'categoria': categoria_restaurante, 'status': False})
+    # Gera um novo ID para o restaurante e adiciona à lista
+    novo_id = restaurantes[-1]['id'] + 1 if restaurantes else 1
+    restaurantes.append({'id': novo_id,  'nome': nome_restaurante, 'categoria': categoria_restaurante, 'status': False})
     print(f'Restaurante {nome_restaurante} cadastrado com sucesso!\n')
     voltar_ao_menu()
 
 def alternar_status_restaurante():
     """
-    Altera status do restaurante (ativado/desativado)
+    Altera o status de um restaurante (ativado/desativado).
+    Solicita o nome do restaurante e alterna o valor do campo 'status'.
     """
     exibir_subtitulo('Alternar Status Restaurante')
-    nome_restaurante = input('Digite o nome do restaurante que deseja alterar: ')
+    nome_restaurante = input('Digite o nome do restaurante que deseja alterar: ')  # Solicita o nome do restaurante
     print()
-    restaurante_encontrado = False
+    restaurante_encontrado = False  # Flag para verificar se o restaurante foi encontrado
     
-    for restaurante in restaurantes:
-        if nome_restaurante == restaurante['nome']:
+    for restaurante in restaurantes:  # Itera sobre a lista de restaurantes
+        if nome_restaurante == restaurante['nome']:  # Verifica se o nome corresponde
             restaurante_encontrado = True
-            restaurante['status'] = not restaurante['status']
+            restaurante['status'] = not restaurante['status']  # Alterna o status
             mensagem = f'O restaurante {nome_restaurante} foi ativado com sucesso' if restaurante['status'] else f'O restaurante {nome_restaurante} foi desativado com sucesso'
             print(mensagem)
             voltar_ao_menu()
-    if not restaurante_encontrado:
+    if not restaurante_encontrado:  # Caso o restaurante não seja encontrado
         print(f'O restaurante {nome_restaurante} nao foi encontrado')
         voltar_ao_menu()
 
 def listar_restaurante():
     """
     Exibe a lista de restaurantes cadastrados.
+    Mostra o ID, nome, categoria e status (Ativo/Desativado) de cada restaurante.
     """
     exibir_subtitulo(f'{"Lista de restaurantes":^58}')
     print('{:^8} {:^22} {:^22} {:^8}'.format('ID', 'NOME', 'CATEGORIA', 'STATUS'))
@@ -88,9 +93,11 @@ def listar_restaurante():
     for restaurante in restaurantes:  # Itera sobre a lista de restaurantes
         nome_restaurante = restaurante['nome']
         categoria_restaurante = restaurante['categoria']
-        status_restaurante = restaurante['status']
         id_restaurante = restaurante['id']
-        print(f' {id_restaurante:>5}- | {nome_restaurante:<20} | {categoria_restaurante:<20} | {status_restaurante:^} ')  # Exibe cada restaurante
+        status_restaurante =  'ATIVO' if restaurante['status'] == True else 'DESATIVADO'
+        
+        # Exibe os dados formatados
+        print(f' {id_restaurante:>5}- | {nome_restaurante:<20} | {categoria_restaurante:<20} | {status_restaurante:^} ')
     voltar_ao_menu()
 
 def escolher_opcao():
@@ -98,20 +105,27 @@ def escolher_opcao():
     Solicita ao usuário que escolha uma opção do menu.
     Executa a função correspondente à opção escolhida.
     """
-    opcao_escolhida = int(input('Escolha uma opção: ').strip())  # Solicita a entrada do usuário
+    opcao_escolhida = input('Escolha uma opção: ').strip()  # Solicita a entrada do usuário
+    if not opcao_escolhida:  # Verifica se a entrada está vazia
+        print('Por favor escolha uma das opcoes!')
+        return escolher_opcao()
+    
+    opcao_escolhida = int(opcao_escolhida)  # Converte a entrada para inteiro
     try:
-        if opcao_escolhida == 1:  # Estrutura de correspondência para as opções            
-            cadastrar_restaurante()  # Opção para cadastrar restaurante
-        elif opcao_escolhida == 2:
-            listar_restaurante()  # Opção para listar restaurantes
-        elif opcao_escolhida == 3:
-            alternar_status_restaurante()  # Opção para ativar restaurante
-        elif opcao_escolhida == 4:
-            finalizar_programa()  # Opção para finalizar o programa
+        if opcao_escolhida == 1:  # Opção para cadastrar restaurante
+            cadastrar_restaurante()
+        elif opcao_escolhida == 2:  # Opção para listar restaurantes
+            listar_restaurante()
+        elif opcao_escolhida == 3:  # Opção para ativar/desativar restaurante
+            alternar_status_restaurante()
+        elif opcao_escolhida == 4:  # Opção para finalizar o programa
+            finalizar_programa()
         else:
             opcao_invalida()  # Opção inválida
-    except ValueError:
-        opcao_invalida()  # Trata entradas inválidas (não numéricas)
+            return
+    except ValueError:  # Trata entradas inválidas (não numéricas)
+        opcao_invalida()
+        return escolher_opcao()
 
 def finalizar_programa():
     """
