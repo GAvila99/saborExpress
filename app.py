@@ -72,7 +72,7 @@ def alternar_status_restaurante():
     restaurante_encontrado = False  # Flag para verificar se o restaurante foi encontrado
     
     for restaurante in restaurantes:  # Itera sobre a lista de restaurantes
-        if nome_restaurante == restaurante['nome']:  # Verifica se o nome corresponde
+        if nome_restaurante.lower() == restaurante['nome'].lower():  # Verifica se o nome corresponde
             restaurante_encontrado = True
             restaurante['status'] = not restaurante['status']  # Alterna o status
             mensagem = f'O restaurante {nome_restaurante} foi ativado com sucesso' if restaurante['status'] else f'O restaurante {nome_restaurante} foi desativado com sucesso'
